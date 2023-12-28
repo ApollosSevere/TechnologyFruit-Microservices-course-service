@@ -27,7 +27,7 @@ pipeline{
 
                 gitCheckout(
                     branch: "main",
-                    url: "https://github.com/ApollosSevere/ApolloStore-Micorservice-Auth-Service",
+                    url: "https://github.com/ApollosSevere/lms-microservices-course-service",
                 )
 
             }

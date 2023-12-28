@@ -1,29 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: auth-service-app
+  name: course-service-app
 spec:
   selector:
     matchLabels:
-      app: auth-service-app
+      app: course-service-app
   template:
     metadata:
       labels:
-        app: auth-service-app
+        app: course-service-app
     spec:
       containers:
-        - name: auth-service-app
+        - name: course-service-app
           image: 637223683609.dkr.ecr.us-east-1.amazonaws.com/lms-microservices-course-service-linux:latest
           imagePullPolicy: Always
           ports:
-            - containerPort: 8086
-          env:
-            #          - name: EUREKA_SERVER_ADDRESS
-            #            valueFrom:
-            #              configMapKeyRef:
-            #                key: eureka_service_address
-            #                name: eureka-cm
+            - containerPort: 8087
 
+
+          env:
             - name: ENABLE_EUREKA
               valueFrom:
                 configMapKeyRef:
@@ -36,38 +32,24 @@ spec:
                   key: config_server_url
                   name: config-server-cm
 
-            # DB_CONNECTION
-            - name: DB_HOST
-              valueFrom:
-                configMapKeyRef:
-                  key: db_host
-                  name: db-host-jwt
 
-            - name: DB_USERNAME
-              valueFrom:
-                configMapKeyRef:
-                  key: username
-                  name: db-host-credentials
-
-            - name: DB_PASSWORD
-              valueFrom:
-                configMapKeyRef:
-                  key: password
-                  name: db-host-credentials
-
-
+#            - name: EUREKA_SERVER_ADDRESS
+#              valueFrom:
+#                configMapKeyRef:
+#                  key: eureka_service_address
+#                  name: eureka-cm
 
 ---
 
 apiVersion: v1
 kind: Service
 metadata:
-  name: auth-service-svc
+  name: course-service-svc
 spec:
   type: LoadBalancer
   selector:
-    app: auth-service-app
+    app: course-service-app
   ports:
     - port: 80
-      targetPort: 8086
+      targetPort: 8087
 
