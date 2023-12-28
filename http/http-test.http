@@ -1,0 +1,79 @@
+### Register User 1
+POST localhost:8000/api/v1/course
+Content-Type: application/json
+
+{
+  "userId": "1",
+  "title": "CSS Crash Course"
+}
+
+
+### GET PRODUCT
+GET http://127.0.0.1:55176/api/v1/product/2
+Authorization: Bearer {{auth-token}}
+
+### Register User 2
+POST http://127.0.0.1:55176/api/v1/auth/register
+Content-Type: application/json
+
+{
+  "firstname": "Apollo",
+  "lastname": "ThatBFoull",
+  "email":  "alibou21@mail.com",
+  "password": "password",
+  "role":  "MANAGER"
+}
+
+> {% client.global.set("auth-token", response.body.access_token);  %}
+
+### Register User 3
+POST http://127.0.0.1:55176/api/v1/auth/register
+Content-Type: application/json
+
+{
+  "firstname": "Apollo",
+  "lastname": "ThatBFoull",
+  "email":  "alibou21@mail.com",
+  "password": "password",
+  "role":  "TEST_SPOT"
+}
+
+> {% client.global.set("auth-token", response.body.access_token);  %}
+
+
+### Query the Demo endpoint
+GET http://127.0.0.1:50780/api/v1/auth/demo-controller
+Authorization: Bearer {{auth-token}}
+
+
+### TEST validateToken
+GET http://localhost:8086/api/v1/auth/validateToken
+Authorization: Bearer {{auth-token}}
+
+
+
+
+#  public ConnValidationResponse validateToken(String tokenToValidate) {
+#    Optional<Token> potentialToken = this.tokenRepository.findByToken(tokenToValidate);
+#
+#    System.out.println("IS TOKEN HERE?!?! " + tokenToValidate);
+#    System.out.println("POTENTIAL TOKEN PRESENT? " + potentialToken.isPresent());
+#    boolean isValidToken = potentialToken.isPresent() && !potentialToken.get().expired && !potentialToken.get().isRevoked();
+#
+#    if (isValidToken) {
+#      User user = potentialToken.get().user;
+#
+#      return ConnValidationResponse.builder()
+#              .status(null)
+#              .isAuthenticated(true)
+#              .username(user.getUsername())
+#              .token(tokenToValidate)
+#              .role(user.getRole())
+#              .authorities(user.getRole().getAuthorities())
+#              .build();
+#    } else {
+#      throw new RuntimeException("TOKEN INVALID");
+#    }
+#
+#  }
+#}
