@@ -173,6 +173,8 @@ pipeline{
                   if(apply){
 
                     sh """
+                      kubectl apply -f config-maps.yaml
+
                       kubectl apply -f .
                     """
                   }
