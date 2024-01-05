@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
         - name: course-service-app
-          image: 637223683609.dkr.ecr.us-east-1.amazonaws.com/lms-microservices-course-service-linux:latest
+          image: 465054216401.dkr.ecr.us-east-1.amazonaws.com/lms-microservices-course-service-linux:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 8087
