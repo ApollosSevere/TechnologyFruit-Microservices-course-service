@@ -21,5 +21,5 @@ application:
 
 eureka:
   client:
-    enabled: ${ENABLE_EUREKA:false}
+    enabled: ${ENABLE_EUREKA:true}
 
