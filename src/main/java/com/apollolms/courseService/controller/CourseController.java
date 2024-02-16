@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -189,6 +191,42 @@ public class CourseController {
         courseService.rearrangeChapters(courseId, chapters);
         return ResponseEntity.ok("Chapter order updated successfully.");
     }
+
+    @PreAuthorize("hasRole('USER') || hasRole('TEACHER')")
+    @PostMapping("/{courseId}/reviews")
+    public ResponseEntity<Course> addReviewToCourse(
+            @PathVariable String courseId,
+            @RequestBody Course.Review reviewDto) throws IllegalAccessException {
+
+        // Check if the course exists
+        Course existingCourse = courseService.getCourseDetails(courseId);
+
+        if (existingCourse == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        // Check if the reviews list is null, initialize it if null
+        if (existingCourse.getReviews() == null) {
+            existingCourse.setReviews(new ArrayList<>());
+        }
+
+        // Create a new review
+        Course.Review review = new Course.Review();
+        review.setUserId(reviewDto.getUserId());
+        review.setUser_name(reviewDto.getUser_name());
+        review.setRating(reviewDto.getRating());
+        review.setComment(reviewDto.getComment());
+        review.setCreatedAt(new Date());
+
+        // Add the review to the course
+        existingCourse.getReviews().add(review);
+
+        // Save the updated course
+        Course updatedCourse = courseService.updateCourse(courseId, existingCourse);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(updatedCourse);
+    }
+
 
 
 }

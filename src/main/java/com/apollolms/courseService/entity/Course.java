@@ -31,6 +31,7 @@ public class Course {
     public List<Chapter> chapters;
     public List<Attachment> attachments;
     public List<Purchase> purchases;
+    public List<Review> reviews;
 
     @CreatedDate
     private Date createdAt;
@@ -130,6 +131,26 @@ public class Course {
         private Date updatedAt;
 
         public Purchase() {
+            id = new ObjectId().toString();
+        }
+    }
+
+    @Data
+    public static class Review {
+        @Id
+        private String id; // Review ID
+        private String userId; // User ID of the reviewer
+        private String user_name;
+        private int rating; // Rating (1-5 stars)
+        private String comment; // Review comment
+
+        @CreatedDate
+        private Date createdAt;
+
+        @LastModifiedDate
+        private Date updatedAt;
+
+        public Review() {
             id = new ObjectId().toString();
         }
     }
