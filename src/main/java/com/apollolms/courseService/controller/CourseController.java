@@ -147,7 +147,7 @@ public class CourseController {
     }
 
 
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('USER') || hasRole('TEACHER')")
     @PostMapping("/{courseId}/addPurchase")
     public ResponseEntity<Course> addPurchase(
             @PathVariable String courseId,
