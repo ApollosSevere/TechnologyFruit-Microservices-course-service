@@ -34,15 +34,7 @@ class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-//                                .requestMatchers(HttpMethod.GET,"/api/v1/course").permitAll()
-//                                .requestMatchers(HttpMethod.POST,"/api/v1/course/{courseId}/addPurchase").hasRole("USER")
-//                                .requestMatchers(HttpMethod.POST,"/api/v1/course/**").hasRole("TEACHER")
-//                                .requestMatchers(HttpMethod.PUT,"/api/v1/course/**").hasRole("TEACHER")
-//                                .requestMatchers(HttpMethod.DELETE,"/api/v1/course/**").hasRole("TEACHER")
-//                                .requestMatchers(GET, "/api/v1/product/**").hasAuthority("MANAGER_READ")
                                 .anyRequest().authenticated()
-
-
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);

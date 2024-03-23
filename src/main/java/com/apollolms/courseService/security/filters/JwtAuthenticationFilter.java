@@ -23,30 +23,15 @@ import java.util.List;
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-
     @Autowired
     private JwtUtils jwtUtils;
 
     @Override
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain filterChain) throws IOException, ServletException {
 
-        /* *IMPORTANT: This page really is just parsing the request to retrieve
-        *              important information!
-        *              - If the request reaches up to this point we know for sure that
-        *                it is Authorized and Authenticated! --> Know all we have to do
-        *                is pull the necessary information out!  */
-
         try {
 
             String jwt = parseJwt(req);
-            System.out.println("ON doFilterInternal ! .....");
-
-            boolean check = jwt != null;
-
-            System.out.println("Is jwt present?: " + check);
-            System.out.println("JWT: " + jwt);
-            System.out.println("IS JWT Valid?: " + jwtUtils.validateJwtToken(jwt));
-
 
             if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
                 System.out.println("ATTEMPTING PRODUCT ATHENTICATION FILTER!! .....");
@@ -67,11 +52,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         username, null, authorities);
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(req));
 
-                /* The entire point of this is to set the SecurityContext for the whole
-                * sub-application!! Find out through thoses tutorials why SecurityContextHolder
-                * is imporatnat and how does it work! */
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-                System.out.println(SecurityContextHolder.getContext());
             }
         } catch (Exception e) {
             log.error("AuthTokenFilter | doFilterInternal | Cannot set user authentication: {}", e.getMessage());
@@ -83,14 +64,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private String parseJwt(HttpServletRequest request) {
 
         String headerAuth = request.getHeader("Authorization");
-
         log.info("AuthTokenFilter | parseJwt | headerAuth: {}", headerAuth);
 
-
         if (StringUtils.hasText(headerAuth)) {
-
             log.info("AuthTokenFilter | parseJwt | parseJwt: {}", headerAuth.substring(7));
-
             return headerAuth.substring(7);
         }
 

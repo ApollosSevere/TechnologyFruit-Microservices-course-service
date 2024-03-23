@@ -198,19 +198,16 @@ public class CourseController {
             @PathVariable String courseId,
             @RequestBody Course.Review reviewDto) throws IllegalAccessException {
 
-        // Check if the course exists
         Course existingCourse = courseService.getCourseDetails(courseId);
 
         if (existingCourse == null) {
             return ResponseEntity.notFound().build();
         }
 
-        // Check if the reviews list is null, initialize it if null
         if (existingCourse.getReviews() == null) {
             existingCourse.setReviews(new ArrayList<>());
         }
 
-        // Create a new review
         Course.Review review = new Course.Review();
         review.setUserId(reviewDto.getUserId());
         review.setUser_name(reviewDto.getUser_name());
@@ -218,10 +215,8 @@ public class CourseController {
         review.setComment(reviewDto.getComment());
         review.setCreatedAt(new Date());
 
-        // Add the review to the course
         existingCourse.getReviews().add(review);
 
-        // Save the updated course
         Course updatedCourse = courseService.updateCourse(courseId, existingCourse);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(updatedCourse);
